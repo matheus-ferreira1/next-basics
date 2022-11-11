@@ -1,3 +1,4 @@
+import { GetServerSideProps } from "next";
 import { useEffect, useState } from "react";
 
 interface Post {
@@ -6,14 +7,19 @@ interface Post {
   body: string;
 }
 
-export default function Home() {
-  const [posts, setPosts] = useState<Post[]>([]);
+interface HomeProps {
+  posts: Post[];
+}
 
-  useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/posts")
-      .then((response) => response.json())
-      .then((data) => setPosts(data));
-  }, []);
+export default function Home({ posts }: HomeProps) {
+  // const [posts, setPosts] = useState<Post[]>([]);
+
+  //client side rendering: o browser faz todo o trabalho de requisição e tratamento
+  // useEffect(() => {
+  //   fetch("https://jsonplaceholder.typicode.com/posts")
+  //     .then((response) => response.json())
+  //     .then((data) => setPosts(data));
+  // }, []);
 
   return (
     <div>
@@ -26,3 +32,14 @@ export default function Home() {
     </div>
   );
 }
+
+// server side rendering: uma camada intermediaria de node faz as requisições e entrega a pagina html pronta. Se o JS do navegador estiver desligado, receberá a data mesmo assim
+export const getServerSideProps: GetServerSideProps = async () => {
+  const response = await fetch("https://jsonplaceholder.typicode.com/posts");
+  const posts = await response.json();
+
+  //as props abaixo são recebidas como argumento do componente
+  return {
+    props: { posts },
+  };
+};
