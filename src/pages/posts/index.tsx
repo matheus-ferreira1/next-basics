@@ -1,4 +1,5 @@
 import { GetStaticProps } from "next";
+import SEO from "../../components/SEO";
 
 interface Post {
   id: string;
@@ -12,10 +13,11 @@ interface PostsProps {
 export default function Posts({ posts }: PostsProps) {
   return (
     <div>
+      <SEO title="Posts" />
       <h1>All Posts</h1>
       <ul>
         {posts.map((post) => (
-          <li>{post.title}</li>
+          <li key={post.id}>{post.title}</li>
         ))}
       </ul>
     </div>
