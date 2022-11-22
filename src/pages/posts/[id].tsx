@@ -1,16 +1,10 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
+import SEO from "../../components/SEO";
 
-interface Comment {
-  id: string;
-  body: string;
-}
+import styles from "./post.module.scss";
 
-interface CommentsProps {
-  comments: Comment[];
-}
-
-export default function Post({ comments }: CommentsProps) {
+export default function Post() {
   const router = useRouter();
 
   if (router.isFallback) {
@@ -19,45 +13,28 @@ export default function Post({ comments }: CommentsProps) {
 
   return (
     <>
-      <h1>Post {router.query.id}</h1>
-      <ul>
-        {comments.map((comment) => (
-          <li key={comment.id}>{comment.body}</li>
-        ))}
-      </ul>
+      <SEO title="Post" />
+
+      <main className={styles.container}>
+        <article className={styles.post}>
+          <h1>Title</h1>
+          <p>Body</p>
+        </article>
+      </main>
     </>
   );
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  // const response = await fetch("https://jsonplaceholder.typicode.com/posts");
-  // const posts = await response.json();
-
-  // const paths = posts.map((post: any) => {
-  //   return {
-  //     params: { id: String(post.id) },
-  //   };
-  // });
-
-  return {
-    paths: [],
-    fallback: true,
-  };
-};
-
-export const getStaticProps: GetStaticProps<CommentsProps> = async (
-  context
-) => {
-  const { id } = context.params;
+export const getStaticProps: GetStaticProps = async (context) => {
+  const router = useRouter();
+  const { id } = router.query;
+  // const { id } = context.params;
   const response = await fetch(
-    `https://jsonplaceholder.typicode.com/comments?postId=${id}`
+    `https://jsonplaceholder.typicode.com/posts/${id}`
   );
   const comments = await response.json();
 
   return {
-    props: {
-      comments,
-    },
-    revalidate: 5,
+    props: {},
   };
 };
