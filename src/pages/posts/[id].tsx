@@ -1,10 +1,23 @@
-import { GetStaticPaths, GetStaticProps } from "next";
+import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import SEO from "../../components/SEO";
 
 import styles from "./post.module.scss";
 
-export default function Post() {
+interface Post {
+  id: string;
+  title: string;
+  body: string;
+}
+
+interface Comments {
+  id: string;
+  name: string;
+  email: string;
+  body: string;
+}
+
+export default function Post({ post, comments }: any) {
   const router = useRouter();
 
   if (router.isFallback) {
@@ -17,24 +30,38 @@ export default function Post() {
 
       <main className={styles.container}>
         <article className={styles.post}>
-          <h1>Title</h1>
-          <p>Body</p>
+          <h1>{post.title}</h1>
+          <div className={styles.content}>
+            <p>{post.body}</p>
+            <ul>
+              {comments.map((comment) => (
+                <li key={comment.id}>
+                  <h4>{comment.name}</h4>
+                  <p>{comment.body}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
         </article>
       </main>
     </>
   );
 }
 
-export const getStaticProps: GetStaticProps = async (context) => {
-  const router = useRouter();
-  const { id } = router.query;
-  // const { id } = context.params;
-  const response = await fetch(
-    `https://jsonplaceholder.typicode.com/posts/${id}`
-  );
-  const comments = await response.json();
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { id } = context.query;
+  console.log(id);
+
+  const [post, comments] = await Promise.all([
+    fetch(`https://jsonplaceholder.typicode.com/posts/${id}`).then((res) =>
+      res.json()
+    ),
+    fetch(`https://jsonplaceholder.typicode.com/posts/${id}/comments`).then(
+      (res) => res.json()
+    ),
+  ]);
 
   return {
-    props: {},
+    props: { post, comments },
   };
 };
