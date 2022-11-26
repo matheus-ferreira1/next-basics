@@ -4,10 +4,12 @@ import SEO from "../../components/SEO";
 
 import styles from "./post.module.scss";
 
-interface Post {
-  id: string;
-  title: string;
-  body: string;
+interface PostData {
+  0: {
+    id: string;
+    title: string;
+    body: string;
+  };
 }
 
 interface Comments {
@@ -34,9 +36,14 @@ export default function Post({ post, comments }: any) {
           <div className={styles.content}>
             <p>{post.body}</p>
             <ul>
-              {comments.map((comment) => (
+              <span>
+                <h2>Comments:</h2>
+              </span>
+              {comments.map((comment: any) => (
                 <li key={comment.id}>
-                  <h4>{comment.name}</h4>
+                  <h4>
+                    Comment by: {comment.name} | {comment.email}
+                  </h4>
                   <p>{comment.body}</p>
                 </li>
               ))}
@@ -50,7 +57,6 @@ export default function Post({ post, comments }: any) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = context.query;
-  console.log(id);
 
   const [post, comments] = await Promise.all([
     fetch(`https://jsonplaceholder.typicode.com/posts/${id}`).then((res) =>
