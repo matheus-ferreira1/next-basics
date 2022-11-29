@@ -15,6 +15,7 @@ describe("Header component", () => {
   it("renders correctly", () => {
     const { getByText, getByAltText } = render(<Header />);
 
+    //bom playground para verificar as possibilidades de teste do componente
     // screen.logTestingPlaygroundURL();
 
     expect(getByText("Home")).toBeInTheDocument();

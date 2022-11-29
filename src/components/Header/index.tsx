@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import styles from "./styles.module.scss";
+import styles from "./header.module.scss";
 
 export default function Header() {
   const { asPath } = useRouter();
