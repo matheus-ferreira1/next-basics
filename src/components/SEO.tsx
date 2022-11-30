@@ -42,8 +42,6 @@ export default function SEO({
       <meta property="og:locale" content="pt_BR" />
       <meta property="og:type" content="website" />
       <meta property="og:site_name" content={pageTitle} />
-      <meta property="og:image" content={pageImage} />
-      <meta property="og:image:secure_url" content={pageImage} />
       <meta property="og:image:alt" content="Thumbnail" />
       <meta property="og:image:type" content="image/png" />
       <meta property="og:image:width" content="1200" />
@@ -53,8 +51,6 @@ export default function SEO({
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:site" content="@ContactstSmart" />
       <meta name="twitter:creator" content="@ContactstSmart" />
-      <meta name="twitter:image" content={pageImage} />
-      <meta name="twitter:image:src" content={pageImage} />
       <meta name="twitter:image:alt" content="Thumbnail" />
       <meta name="twitter:image:width" content="1200" />
       <meta name="twitter:image:height" content="620" />
